@@ -1,0 +1,11 @@
+http://setup.pix-link.net
+ssid PIX-LINK-2.4G
+pin 14466489
+s/n 202049611W  
+gateway 193.168.7.1
+
+http://tplinkwifi.net
+ssid TP-LINK_0808
+pin 85484511
+s/n 2184327014003
+gateway 
