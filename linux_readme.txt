@@ -15,7 +15,7 @@
 # Checking the IP Address on the network
       $ hostname -I
 
-# Autoconnect wifi
+# Autoconnect wifi (ubuntu)
       1) $ sudo nano /etc/netplan/50-cloud-init.yaml
       2) then write down the connection as follow:
 
@@ -50,6 +50,37 @@ network:
       4) $ sudo netplan generate
       5) $ sudo netplan apply
       5) $ sudo reboot
+
+# Autoconnect wifi (raspberrypi)
+      1) $ sudo nano /etc/netwoek/interfaces
+      2) then write down the command as follow:
+
+auto wlan0
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+wpa-con /etc/wpa_supplicant/wpa_supplicant.conf
+iface deafult inet dhcp
+
+      3) ctrl + x, y, enter
+      4) $ sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+      5) then write down the connection as follow:
+
+network={
+      ssid="network_A"
+      psk="password_A"
+      key_mgmt=WPA-PSK
+      priority=1
+}
+network={
+      ssid="network_B"
+      psk="password_B"
+      key_mgmt=WPA-PSK
+      priority=2
+}
+
+      5) $ sudo netplan apply
+      5) $ sudo reboot
+
 
 # Install X2Go Server (https://www.howtoforge.com/tutorial/x2go-server-ubuntu-14-04)
       1) $ sudo apt-get install software-properties-common
@@ -92,7 +123,6 @@ network:
       $ gedit file_directory
 
 # Install vscode "sudo snap install code --classic"
-
 # Open vscode
       $ code .
 
@@ -100,15 +130,20 @@ network:
       $ free -h
 
 # Python Virtual Environment
-1) install venv package
-      $ sudo apt install python3-venv
-2) make venv
-      $ python3 -m venv <venv_name>
-3) activate venv
+1) install python3
+      $ sudo apt-get install python3
+2) install pip
+      $ sudo apt-get install python3-pip
+3) install virtualenv package
+      $ sudo pip3 install virtualenv
+      $ sudo apt install python3-virtualenv
+4) create virtual environment
+      $ virtualenv <venv_name>
+5) activate virtual environment
       $ source <venv_name>/bin/activate
-4) install python package using pip
+6) install python package using pip
       $ pip install <package_name>
-5) deactivate venv
+7) deactivate venv
       $ deactivate
 
 # Network Mapping (search RasPi IP address)
