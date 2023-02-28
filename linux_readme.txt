@@ -15,9 +15,10 @@
 # Checking the IP Address on the network
       $ hostname -I
 
+
 # Autoconnect wifi (ubuntu)
-      1) $ sudo nano /etc/netplan/50-cloud-init.yaml
-      2) then write down the connection as follow:
+1) $ sudo nano /etc/netplan/50-cloud-init.yaml
+2) then write down the connection as follow:
 
 network:
     ethernets:
@@ -46,24 +47,24 @@ network:
                 "ITBdeLabo_1":
                     password: "Delabo0220!"
 
-      3) ctrl + x, y, enter
-      4) $ sudo netplan generate
-      5) $ sudo netplan apply
-      5) $ sudo reboot
+3) ctrl + x, y, enter
+4) $ sudo netplan generate
+5) $ sudo netplan apply
+6) $ sudo reboot
+
 
 # Autoconnect wifi (raspberrypi)
-      1) $ sudo nano /etc/netwoek/interfaces
-      2) then write down the command as follow:
+1) $ sudo nano /etc/netwoek/interfaces
+2) then write down the command as follow:
 
-auto wlan0
 allow-hotplug wlan0
+auto wlan0
 iface wlan0 inet dhcp
-wpa-con /etc/wpa_supplicant/wpa_supplicant.conf
-iface deafult inet dhcp
+wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 
-      3) ctrl + x, y, enter
-      4) $ sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
-      5) then write down the connection as follow:
+3) ctrl + x, y, enter
+4) $ sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+5) then write down the connection as follow:
 
 network={
       ssid="network_A"
@@ -78,16 +79,21 @@ network={
       priority=2
 }
 
-      5) $ sudo netplan apply
-      5) $ sudo reboot
+6) $ sudo nano /boot/config.txt
+7) then write down the command as follow:
+
+dtoverlay=enable-wifi
+
+8) ctrl + x, y, enter
+6) $ sudo reboot
 
 
 # Install X2Go Server (https://www.howtoforge.com/tutorial/x2go-server-ubuntu-14-04)
-      1) $ sudo apt-get install software-properties-common
-      2) $ sudo add-apt-repository ppa:x2go/stable
-      3) $ sudo apt-get update
-      4) $ sudo apt-get install x2goserver x2goserver-xsession
-      5) $ sudo apt-get install x2gomatebindings
+      $ sudo apt-get install software-properties-common
+      $ sudo add-apt-repository ppa:x2go/stable
+      $ sudo apt-get update
+      $ sudo apt-get install x2goserver x2goserver-xsession
+      $ sudo apt-get install x2gomatebindings
 
 # Install ROS
       $ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
@@ -122,7 +128,9 @@ network={
 # Edit a file
       $ gedit file_directory
 
-# Install vscode "sudo snap install code --classic"
+# Install vscode
+      $ sudo snap install code --classic
+
 # Open vscode
       $ code .
 
@@ -154,7 +162,48 @@ network={
 3) scan the subnet of the router from 1 to 255 [0/24] (change accordingly)
       $ sudo nmap -sn 192.168.18.0/24
 4) if no hostname called "Raspberry Pi" detected, do this (change accordingly)
-      $ sudo nmap -sP 192.168.18.0/24 | awk '/^Nmap/{ip=$NF}/B4:CB:FB/{print ip}'
+      $ sudo nmap -sP 192.168.xx.0/24 | awk '/^Nmap/{ip=$NF}/B4:CB:FB/{print ip}'
 
 # Arduino IDE upload: permission denied (change accordingly)
       $ sudo chmod a+rw /dev/tty*
+
+# Fix VNC Desktop low resolution (Raspberry Pi)
+1) $ sudo nano /boot/config.txt
+2) find the following lines and UNCOMMENT them (or change/add accordingly):
+      framebuffer_width=1920
+      framebuffer_height=1080
+      hdmi_force_hotplug=1
+      hdmi_group=2
+      hdmi_mode=16
+3) find the following lines and COMMENT them:
+      #dtoverlay=vc4-kms-v3d
+      #max_framebuffers=2
+4) ctrl + x, y, enter
+5) sudo reboot
+
+# Install LAMP Server
+1) $ sudo apt-get update
+2) $ sudo apt-get install apache2 -y
+3) $ sudo apt-get install php -y
+4) $ sudo service apache2 restart
+5) $ sudo apt-get install mariadb-server mariadb-client
+6) create 'root' password=[root_password]
+      $ sudo mysql_secure_installation
+7) $ sudo service apache2 restart
+8) $ sudo apt-get install phpmyadmin -y
+9) configure 'root' privileges
+      $ sudo mysql -u root -p
+            > GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '[root_password]' WITH GRANT OPTION;
+            > FLUSH PRIVILEGES;
+            > EXIT;
+10) $ sudo nano /etc/apache2/apache2.conf
+11) add the following line:
+      Include /etc/phpmyadmin/apache.conf
+12) ctrl + x, y, enter
+13) $ sudo service apache2 restart
+14) check IP address for localhost [192.168.xx.yy]
+      $ hostname -I
+15) access PHPMyAdmin
+      http://localhost/phpmyadmin
+            or
+      http://192.168.xx.yy/phpmyadmin
