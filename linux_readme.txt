@@ -185,25 +185,26 @@ dtoverlay=enable-wifi
 1) $ sudo apt-get update
 2) $ sudo apt-get install apache2 -y
 3) $ sudo apt-get install php -y
-4) $ sudo service apache2 restart
-5) $ sudo apt-get install mariadb-server mariadb-client
-6) create 'root' password=[root_password]
+4) $ sudo apt-get install mariadb-server mariadb-client php-mysql -y
+7) $ sudo apt-get install phpmyadmin -y
+5) create 'root' password=[root_password]
       $ sudo mysql_secure_installation
-7) $ sudo service apache2 restart
-8) $ sudo apt-get install phpmyadmin -y
-9) configure 'root' privileges
+6) configure 'root' privileges
       $ sudo mysql -u root -p
-            > GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '[root_password]' WITH GRANT OPTION;
+            > GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';
             > FLUSH PRIVILEGES;
             > EXIT;
-10) $ sudo nano /etc/apache2/apache2.conf
-11) add the following line:
+8) $ sudo nano /etc/apache2/apache2.conf
+9) add the following line:
       Include /etc/phpmyadmin/apache.conf
-12) ctrl + x, y, enter
-13) $ sudo service apache2 restart
-14) check IP address for localhost [192.168.xx.yy]
+10) ctrl + x, y, enter
+11) $ sudo service apache2 restart
+12) check IP address for localhost [192.168.xx.yy]
       $ hostname -I
-15) access PHPMyAdmin
+13) access PHPMyAdmin
       http://localhost/phpmyadmin
             or
       http://192.168.xx.yy/phpmyadmin
+14) change the communication method to TCP/IP for remote server
+      $ sudo mysql --host=localhost --protocol=TCP -u root -p
+      $ status;
