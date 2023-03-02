@@ -15,6 +15,11 @@
 # Checking the IP Address on the network
       $ hostname -I
 
+# Kill infinite looping program
+1) ctrl + z [move program to background]
+2) $ kill %1  [kill the 1st program in background]
+3) $ fg [move program to foreground to check]
+
 
 # Autoconnect wifi (ubuntu)
 1) $ sudo nano /etc/netplan/50-cloud-init.yaml
@@ -137,6 +142,7 @@ dtoverlay=enable-wifi
 # Checking RAM Usage
       $ free -h
 
+
 # Python Virtual Environment
 1) install python3
       $ sudo apt-get install python3
@@ -154,18 +160,20 @@ dtoverlay=enable-wifi
 7) deactivate venv
       $ deactivate
 
+
 # Network Mapping (search RasPi IP address)
 1) install nmap package
       $ sudo apt-get install nmap
 2) retrieve the local IP address of your current computer
       $ hostname -I
-3) scan the subnet of the router from 1 to 255 [0/24] (change accordingly)
-      $ sudo nmap -sn 192.168.18.0/24
-4) if no hostname called "Raspberry Pi" detected, do this (change accordingly)
+3) scan the subnet of the router from 1 to 255 [0/24] (change xx accordingly)
+      $ sudo nmap -sn 192.168.xx.0/24
+4) if no hostname called "Raspberry Pi" detected, do this (change xx accordingly)
       $ sudo nmap -sP 192.168.xx.0/24 | awk '/^Nmap/{ip=$NF}/B4:CB:FB/{print ip}'
 
 # Arduino IDE upload: permission denied (change accordingly)
       $ sudo chmod a+rw /dev/tty*
+
 
 # Fix VNC Desktop low resolution (Raspberry Pi)
 1) $ sudo nano /boot/config.txt
@@ -181,7 +189,8 @@ dtoverlay=enable-wifi
 4) ctrl + x, y, enter
 5) sudo reboot
 
-# Install LAMP Server
+
+# Set-up LAMP Server
 1) $ sudo apt-get update
 2) $ sudo apt-get install apache2 -y
 3) $ sudo apt-get install php -y
@@ -194,10 +203,11 @@ dtoverlay=enable-wifi
             > GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';
             > FLUSH PRIVILEGES;
             > EXIT;
-8) $ sudo nano /etc/apache2/apache2.conf
-9) add the following line:
+7) $ sudo nano /etc/apache2/apache2.conf
+8) add the following line:
       Include /etc/phpmyadmin/apache.conf
-10) ctrl + x, y, enter
+9) ctrl + x, y, enter
+10) $ sudo phpenmod mysqli
 11) $ sudo service apache2 restart
 12) check IP address for localhost [192.168.xx.yy]
       $ hostname -I
@@ -208,3 +218,5 @@ dtoverlay=enable-wifi
 14) change the communication method to TCP/IP for remote server
       $ sudo mysql --host=localhost --protocol=TCP -u root -p
       $ status;
+
+
